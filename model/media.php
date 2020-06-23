@@ -4,13 +4,13 @@ require_once( 'database.php' );
 
 class Media {
 
-  protected $id;
+  protected int $id;
   protected $genre_id;
   protected $title;
   protected $type;
   protected $status;
   protected $release_date;
-  protected $summary;
+  protected string $summary;
   protected $trailer_url;
 
   public function __construct( $media ) {

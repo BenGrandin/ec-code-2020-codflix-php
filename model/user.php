@@ -5,14 +5,17 @@
 	class User {
 
 		protected $id;
-		protected $email;
-		protected $password;
+		protected string $email;
+		protected  $password;
+		protected string $keyEmail;
 
 		public function __construct($user = null) {
 
 			if ($user != null):
 				$this->setId(isset($user->id) ? $user->id : null);
 				$this->setEmail($user->email);
+
+				if ($user->keyEmail) $this->setKeyEmail($user->keyEmail);
 				$this->setPassword($user->password, isset($user->password_confirm) ? $user->password_confirm : false);
 			endif;
 		}
@@ -72,7 +75,6 @@
 				'password' => $this->getPassword()
 			));
 
-
 			echo "<pre> TOTO <br>";
 			var_dump($req);
 			echo "</pre>";
@@ -98,6 +100,29 @@
 
 		}
 
+		/***************************************
+		 * ------- GET USER DATA BY EMAIL -------
+		 ***************************************
+		 * @param string $email
+		 * @return mixed
+		 */
+
+		public function getUserByEmail($email = null) {
+			// Open database connection
+			$db = init_db();
+
+			$req = $db->prepare("SELECT * FROM user WHERE email = ?");
+			if (!$email) {
+				$email = $this->getEmail();
+			}
+			$req->execute(array($email));
+
+			// Close database connection
+			$db = null;
+
+			return $req->fetch();
+		}
+
 		public function getPassword() {
 			return $this->password;
 		}
@@ -115,16 +140,12 @@
 			// Create the confirm key
 			$keyEmail = md5(microtime(TRUE) * 100000);
 
-			// Insertion de la clé dans la base de données (à adapter en INSERT si besoin)
-			$stmt = $db->prepare("UPDATE user SET keyEmail=:$keyEmail WHERE $email like :$email");
-
-			$stmt->bindParam(':keyEmail', $keyEmail);
-			$stmt->execute();
-
-			echo "<pre>";
-			var_dump($stmt);
-			echo "</pre>";
-
+			// Update keyEmail of the user
+			$stmt = $db->prepare("UPDATE user SET keyEmail=:keyEmail WHERE email=:email");
+			$stmt->execute([
+				'keyEmail' => $keyEmail,
+				'email' => $email
+			]);
 
 			// Prepare email for link activation
 			$to = $email;
@@ -137,32 +158,28 @@
 			Pour activer votre compte, veuillez cliquer sur le lien ci-dessous
 			ou copier/coller dans votre navigateur Internet.
 			 
-			http://votresite.com/activation.php?email=' . urlencode($email) . '&keyEmail=' . urlencode($keyEmail) . '
+			http://localhost:8888/ec-code-2020-codflix-php/activation.php?email=' . urlencode($email) . '&keyEmail=' . urlencode($keyEmail) . '
 			 
 			 
 			---------------
 			Ceci est un mail automatique, Merci de ne pas y répondre.';
-
-
 			mail($to, $subject, $message, $header); // Envoi du mail
 
+			echo 'http://localhost:8888/ec-code-2020-codflix-php/index.php?action=validation&email=' . urlencode($email) . '&keyEmail=' . urlencode($keyEmail);
 		}
 
-		/***************************************
-		 * ------- GET USER DATA BY EMAIL -------
-		 ****************************************/
+		/**
+		 * @return string
+		 */
+		public function getKeyEmail(): string {
+			return $this->keyEmail;
+		}
 
-		public function getUserByEmail() {
-			// Open database connection
-			$db = init_db();
-
-			$req = $db->prepare("SELECT * FROM user WHERE email = ?");
-			$req->execute(array($this->getEmail()));
-
-			// Close database connection
-			$db = null;
-
-			return $req->fetch();
+		/**
+		 * @param string $keyEmail
+		 */
+		public function setKeyEmail(string $keyEmail): void {
+			$this->keyEmail = $keyEmail;
 		}
 
 	}

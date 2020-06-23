@@ -23,12 +23,13 @@
 
 	/***************************
 	 * ----- LOGIN FUNCTION -----
-	 ***************************/
+	 **************************
+	 */
 
-	function login($post) {
+	function login() {
 		$data = new stdClass();
-		$data->email = $post['email'];
-		$data->password = hash('sha256', $post['password']);
+		$data->email = $_POST['email'];
+		$data->password = hash('sha256', $_POST['password']);
 
 		$user = new User($data);
 		$userData = $user->getUserByEmail();
@@ -40,6 +41,7 @@
 
 				// Set session
 				$_SESSION['user_id'] = $userData['id'];
+				$_SESSION['is_active'] = $userData['active'];
 
 				header('location: index.php ');
 			endif;
