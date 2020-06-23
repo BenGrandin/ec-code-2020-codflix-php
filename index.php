@@ -7,6 +7,7 @@
 	require_once('controller/signupController.php');
 	require_once('controller/mediaController.php');
 	require_once('controller/validationController.php');
+	require_once('controller/profilController.php');
 	/**************************
 	 * ----- HANDLE ACTION -----
 	 ***************************/
@@ -23,12 +24,23 @@
 				break;
 
 			case 'login':
-
 				if ($user_id) {
 					mediaPage();
 				} else {
 					if (!empty($_POST)) login();
 					else loginPage();
+				}
+				break;
+
+			case 'logout':
+				logout();
+				break;
+
+			case 'profile':
+				if ($user_id) {
+					profilePage();
+				} else {
+					signupPage();
 				}
 				break;
 
@@ -40,11 +52,7 @@
 				}
 				break;
 
-			case 'logout':
 
-				logout();
-
-				break;
 			case 'validation':
 				validationPage();
 		endswitch;
