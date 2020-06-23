@@ -23,16 +23,18 @@
 
 	/***************************
 	 * ----- SIGNUP FUNCTION -----
-	 ***************************/
+	 **************************
+	 * @throws Exception
+	 */
 	function signUp() {
 
 		// On verifie d'abord qu'on reçoit des données via le formulaire
 		if (!empty($_POST)) {
+			global $valid;
 			$email = $_POST['email'];
 			$password = $_POST['password'];
 			$password_confirm = $_POST['password_confirm'];
 			$valid = true;
-			global $errors;
 
 			// On attribut les valeur recuperer dans le form
 			if (isset($_POST['Valider'])) {
@@ -40,30 +42,23 @@
 				$password = htmlentities(trim($password));
 				$conf_password = htmlentities(trim($password_confirm));
 
-				if (empty($mail)) {
+				if (empty($mail) || !preg_match("/^[_a-z0-9-]+(.[_a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)(.[a-z]{2,})$/i", $mail)) {
 					$valid = false;
-					$errors->email = "Le mail ne peut pas être vide";
-				} elseif (!preg_match("/^[_a-z0-9-]+(.[_a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)(.[a-z]{2,})$/i", $mail)) {
+					throw new Exception("Le mail n'est pas valide");
+				}
+				if (empty($password) || $password != $conf_password) {
 					$valid = false;
-					$errors->email = "Le mail n'est pas valide";
+					throw new Exception("Le mot de passe est vide ou la confirmation ne correspond pas");
+				}
+				if ($valid) {
+					$password = hash('sha256', $password);
+					$new_user = new User();
+					$new_user->setEmail($mail);
+					$new_user->setPassword($password);
+
+					$new_user->createUser();
 
 				}
-			}
-			if (empty($password)) {
-				$valid = false;
-				$errors->password = "Le mot de passe ne peut pas être vide";
-			} elseif ($password != $conf_password) {
-				$valid = false;
-				$errors->password = "La confirmation du mot de passe ne correspond pas";
-			}
-			if ($valid) {
-				$password = hash('sha256', $password);
-				$new_user = new User();
-				$new_user->setEmail($mail);
-				$new_user->setPassword($password);
-				$new_user->createUser();
-			} else {
-				displayArrayWithKeys($errors);
 			}
 		}
 	}

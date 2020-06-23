@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <script src="public/lib/jquery/js/jquery-3.5.0.min"></script>
+    <script src="public/lib/jquery/js/jquery-3.5.0.min.js"></script>
     <script src="public/lib/bootstrap/js/bootstrap.min.js"></script>
 
     <script src="public/js/script.js"></script>

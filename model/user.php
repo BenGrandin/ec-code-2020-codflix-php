@@ -1,128 +1,168 @@
 <?php
 
-require_once( 'database.php' );
+	require_once('database.php');
 
-class User {
+	class User {
 
-  protected $id;
-  protected $email;
-  protected $password;
+		protected $id;
+		protected $email;
+		protected $password;
 
-  public function __construct( $user = null ) {
+		public function __construct($user = null) {
 
-    if( $user != null ):
-      $this->setId( isset( $user->id ) ? $user->id : null );
-      $this->setEmail( $user->email );
-      $this->setPassword( $user->password, isset( $user->password_confirm ) ? $user->password_confirm : false );
-    endif;
-  }
+			if ($user != null):
+				$this->setId(isset($user->id) ? $user->id : null);
+				$this->setEmail($user->email);
+				$this->setPassword($user->password, isset($user->password_confirm) ? $user->password_confirm : false);
+			endif;
+		}
 
-  /***************************
-  * -------- SETTERS ---------
-  ***************************/
+		/**************************************
+		 * -------- GET USER DATA BY ID --------
+		 ***************************************/
 
-  public function setId( $id ) {
-    $this->id = $id;
-  }
+		public static function getUserById($id) {
 
-  public function setEmail( $email ) {
+			// Open database connection
+			$db = init_db();
 
-    if ( !filter_var($email, FILTER_VALIDATE_EMAIL)):
-      throw new Exception( 'Email incorrect' );
-    endif;
+			$req = $db->prepare("SELECT * FROM user WHERE id = ?");
+			$req->execute(array($id));
 
-    $this->email = $email;
+			// Close databse connection
+			$db = null;
 
-  }
+			return $req->fetch();
+		}
 
-  public function setPassword( $password, $password_confirm = false ) {
+		/***************************
+		 * -------- GETTERS ---------
+		 ***************************/
 
-    if( $password_confirm && $password != $password_confirm ):
-      throw new Exception( 'Vos mots de passes sont différents' );
-    endif;
+		public function getId() {
+			return $this->id;
+		}
 
-    $this->password = $password;
-  }
+		/***************************
+		 * -------- SETTERS ---------
+		 ***************************/
 
-  /***************************
-  * -------- GETTERS ---------
-  ***************************/
+		public function setId($id) {
+			$this->id = $id;
+		}
 
-  public function getId() {
-    return $this->id;
-  }
+		/***********************************
+		 * -------- CREATE NEW USER ---------
+		 ************************************/
 
-  public function getEmail() {
-    return $this->email;
-  }
+		public function createUser() {
+			// Check if email already exist
+			$email = $this->getEmail();
 
-  public function getPassword() {
-    return $this->password;
-  }
+			$userByEmail = $this->getUserByEmail();
+			if ($userByEmail) {
+				throw new Exception("Email déjà utilisé");
+			}
 
-  /***********************************
-  * -------- CREATE NEW USER ---------
-  ************************************/
+			$db = init_db();
+			// Insert new user
+			$req = $db->prepare("INSERT INTO user ( email, password ) VALUES ( :email, :password )");
+			$req->execute(array(
+				'email' => $email,
+				'password' => $this->getPassword()
+			));
 
-  public function createUser() {
 
-    // Open database connection
-    $db   = init_db();
+			echo "<pre> TOTO <br>";
+			var_dump($req);
+			echo "</pre>";
 
-    // Check if email already exist
-    $req  = $db->prepare( "SELECT * FROM user WHERE email = ?" );
-    $req->execute( array( $this->getEmail() ) );
+			$this->sendConfirmationEmail($db, $email);
 
-    if( $req->rowCount() > 0 ) throw new Exception( "Email ou mot de passe incorrect" );
+			// Close databse connection
+			$db = null;
 
-    // Insert new user
-    $req->closeCursor();
+		}
 
-    $req  = $db->prepare( "INSERT INTO user ( email, password ) VALUES ( :email, :password )" );
-    $req->execute( array(
-      'email'     => $this->getEmail(),
-      'password'  => $this->getPassword()
-    ));
+		public function getEmail() {
+			return $this->email;
+		}
 
-    // Close databse connection
-    $db = null;
+		public function setEmail($email) {
 
-  }
+			if (!filter_var($email, FILTER_VALIDATE_EMAIL)):
+				throw new Exception('Email incorrect');
+			endif;
 
-  /**************************************
-  * -------- GET USER DATA BY ID --------
-  ***************************************/
+			$this->email = $email;
 
-  public static function getUserById( $id ) {
+		}
 
-    // Open database connection
-    $db   = init_db();
+		public function getPassword() {
+			return $this->password;
+		}
 
-    $req  = $db->prepare( "SELECT * FROM user WHERE id = ?" );
-    $req->execute( array( $id ));
+		public function setPassword($password, $password_confirm = false) {
 
-    // Close databse connection
-    $db   = null;
+			if ($password_confirm && $password != $password_confirm):
+				throw new Exception('Vos mots de passes sont différents');
+			endif;
 
-    return $req->fetch();
-  }
+			$this->password = $password;
+		}
 
-  /***************************************
-  * ------- GET USER DATA BY EMAIL -------
-  ****************************************/
+		private function sendConfirmationEmail(PDO $db, $email) {
+			// Create the confirm key
+			$keyEmail = md5(microtime(TRUE) * 100000);
 
-  public function getUserByEmail() {
+			// Insertion de la clé dans la base de données (à adapter en INSERT si besoin)
+			$stmt = $db->prepare("UPDATE user SET keyEmail=:$keyEmail WHERE $email like :$email");
 
-    // Open database connection
-    $db   = init_db();
+			$stmt->bindParam(':keyEmail', $keyEmail);
+			$stmt->execute();
 
-    $req  = $db->prepare( "SELECT * FROM user WHERE email = ?" );
-    $req->execute( array( $this->getEmail() ));
+			echo "<pre>";
+			var_dump($stmt);
+			echo "</pre>";
 
-    // Close databse connection
-    $db   = null;
 
-    return $req->fetch();
-  }
+			// Prepare email for link activation
+			$to = $email;
+			$subject = "Activer votre compte";
+			$header = "From: inscription@votresite.com";
 
-}
+			// The link is compose with keyEmail
+			$message = 'Bienvenue sur VotreSite,
+			 
+			Pour activer votre compte, veuillez cliquer sur le lien ci-dessous
+			ou copier/coller dans votre navigateur Internet.
+			 
+			http://votresite.com/activation.php?email=' . urlencode($email) . '&keyEmail=' . urlencode($keyEmail) . '
+			 
+			 
+			---------------
+			Ceci est un mail automatique, Merci de ne pas y répondre.';
+
+
+			mail($to, $subject, $message, $header); // Envoi du mail
+
+		}
+
+		/***************************************
+		 * ------- GET USER DATA BY EMAIL -------
+		 ****************************************/
+
+		public function getUserByEmail() {
+			// Open database connection
+			$db = init_db();
+
+			$req = $db->prepare("SELECT * FROM user WHERE email = ?");
+			$req->execute(array($this->getEmail()));
+
+			// Close database connection
+			$db = null;
+
+			return $req->fetch();
+		}
+
+	}
