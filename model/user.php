@@ -6,7 +6,7 @@
 
 		protected $id;
 		protected string $email;
-		protected  $password;
+		protected $password;
 		protected string $keyEmail;
 
 		public function __construct($user = null) {
@@ -75,12 +75,8 @@
 				'password' => $this->getPassword()
 			));
 
-			echo "<pre> TOTO <br>";
-			var_dump($req);
-			echo "</pre>";
 
 			$this->sendConfirmationEmail($db, $email);
-
 			// Close databse connection
 			$db = null;
 
@@ -164,8 +160,6 @@
 			---------------
 			Ceci est un mail automatique, Merci de ne pas y répondre.';
 			mail($to, $subject, $message, $header); // Envoi du mail
-
-			echo 'http://localhost:8888/ec-code-2020-codflix-php/index.php?action=validation&email=' . urlencode($email) . '&keyEmail=' . urlencode($keyEmail);
 		}
 
 		/**

@@ -34,18 +34,16 @@
 		$user = new User($data);
 		$userData = $user->getUserByEmail();
 
-		$error_msg = "Email ou mot de passe incorrect";
 
-		if ($userData && sizeof($userData) != 0):
-			if ($user->getPassword() == $userData['password']):
+		if ($userData && sizeof($userData) != 0) {
+			// Set session
+			$_SESSION['user_id'] = $userData['id'];
+			$_SESSION['is_active'] = $userData['active'];
 
-				// Set session
-				$_SESSION['user_id'] = $userData['id'];
-				$_SESSION['is_active'] = $userData['active'];
-
-				header('location: index.php ');
-			endif;
-		endif;
+			header('location: index.php ');
+		} else {
+			$error_msg = "Email ou mot de passe incorrect";
+		}
 
 		require('view/auth/loginView.php');
 	}
