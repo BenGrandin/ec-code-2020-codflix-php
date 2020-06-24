@@ -13,9 +13,18 @@
     flex-basis: 24%;
     margin: 4px;
 
-    background: #1f1f1f;
+    background: var(--color-black);
 
-    padding-bottom: 25px;
+    padding-bottom: 15px;
+    height: fit-content;
+}
+
+.media-list .tvshow {
+    background: var(--color-black);
+}
+
+.media-list .movie {
+    background: var(--color-blue);
 }
 
 .media-list .item .video {
@@ -30,27 +39,60 @@
     color: #fff;
     font-weight: bold;
 
-    padding: 8px 20px;
+    padding: 8px;
     text-align: center;
+    place-items: center;
+
 }
+
 .media-list .item .title:after {
     content: "";
-    display: block;
     width: 20px;
 
     border-bottom: 1px solid var(--color-red);
     margin: 10px auto 0 auto;
+
+    display: none;
+}
+
+.media-list .item .title .type {
+    background-color: white;
+    width: 50px;
+    display: none;
+
+}
+
+.media-list .tvshow .title .type {
+    color: var(--color-black);
+}
+
+.media-list .movie .title .type {
+    color: var(--color-blue);
+}
+
+.media-list .item:hover .title:after {
+    display: block;
 }
 
 .media-list .item:hover {
     text-decoration: none;
 }
 
+.media-list .item:hover .title .type {
+    display: block;
+}
+
 .media-list .item .summary {
+    display: none;
     color: #fff;
     padding: 8px 20px;
-
 }
+
+
+.media-list .item:hover .summary {
+    display: block;
+}
+
 
 @media screen and (max-width: 768px) {
     .media-list .item {
