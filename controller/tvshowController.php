@@ -17,6 +17,7 @@
 		if ($media['type'] === "tvshow") $media['type'] = "Série";
 
 		$media['status'] = strtolower($media['status']) === strtolower("Released") ? "Est sorti" : "Va sortir";
-		
+
+
 		require('view/mediaView.php');
 	}

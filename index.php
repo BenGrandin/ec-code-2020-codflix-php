@@ -53,7 +53,14 @@
 				}
 				break;
 
-			case 'media':
+			case 'movie':
+				if ($user_id) {
+					mediaPage();
+				} else {
+					signupPage();
+				}
+				break;
+			case 'tvshow':
 				if ($user_id) {
 					mediaPage();
 				} else {
