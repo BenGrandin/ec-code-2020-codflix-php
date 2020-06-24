@@ -13,7 +13,7 @@
 	 ***************************/
 	global $user_id;
 	$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : false;
-	$is_active = isset($_SESSION['is_active']) ? $_SESSION['is_active'] : false;
+	$emailVerified = isset($_SESSION['emailVerified']) ? $_SESSION['emailVerified'] : false;
 
 	if (isset($_GET['action'])):
 
@@ -59,7 +59,7 @@
 
 	else:
 		if ($user_id) {
-			if ($is_active) {
+			if ($emailVerified) {
 				mediaPage();
 			} else {
 				validationPage();

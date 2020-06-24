@@ -8,6 +8,7 @@
 		protected string $email;
 		protected $password;
 		protected string $keyEmail;
+		protected string $emailVerified;
 
 		public function __construct($user = null) {
 
@@ -16,15 +17,19 @@
 				$this->setEmail($user->email);
 
 				if ($user->keyEmail) $this->setKeyEmail($user->keyEmail);
+				if ($user->emailVerified) $this->setEmailVerified($user->emailVerified);
 				$this->setPassword($user->password, isset($user->password_confirm) ? $user->password_confirm : false);
 			endif;
 		}
 
 		/**************************************
 		 * -------- GET USER DATA BY ID --------
-		 ***************************************/
+		 **************************************
+		 * @param int $id
+		 * @return User
+		 */
 
-		public static function getUserById($id) {
+		public static function getUserById(int $id): User {
 
 			// Open database connection
 			$db = init_db();
@@ -38,20 +43,39 @@
 			return $req->fetch();
 		}
 
-		/***************************
-		 * -------- GETTERS ---------
-		 ***************************/
-
 		public function getId() {
 			return $this->id;
 		}
 
-		/***************************
-		 * -------- SETTERS ---------
-		 ***************************/
-
 		public function setId($id) {
 			$this->id = $id;
+		}
+
+		public function getEmail() {
+			return $this->email;
+		}
+
+		public function setEmail($email) {
+
+			if (!filter_var($email, FILTER_VALIDATE_EMAIL)):
+				throw new Exception('Email incorrect');
+			endif;
+
+			$this->email = $email;
+
+		}
+
+		public function getPassword() {
+			return $this->password;
+		}
+
+		public function setPassword($password, $password_confirm = false) {
+
+			if ($password_confirm && $password != $password_confirm):
+				throw new Exception('Vos mots de passes sont différents');
+			endif;
+
+			$this->password = $password;
 		}
 
 		/***********************************
@@ -82,20 +106,6 @@
 
 		}
 
-		public function getEmail() {
-			return $this->email;
-		}
-
-		public function setEmail($email) {
-
-			if (!filter_var($email, FILTER_VALIDATE_EMAIL)):
-				throw new Exception('Email incorrect');
-			endif;
-
-			$this->email = $email;
-
-		}
-
 		/***************************************
 		 * ------- GET USER DATA BY EMAIL -------
 		 ***************************************
@@ -119,20 +129,42 @@
 			return $req->fetch();
 		}
 
-		public function getPassword() {
-			return $this->password;
+		/**
+		 * @return string
+		 */
+		public function getKeyEmail(): string {
+			return $this->keyEmail;
 		}
 
-		public function setPassword($password, $password_confirm = false) {
-
-			if ($password_confirm && $password != $password_confirm):
-				throw new Exception('Vos mots de passes sont différents');
-			endif;
-
-			$this->password = $password;
+		/**
+		 * @param string $keyEmail
+		 */
+		public function setKeyEmail(string $keyEmail): void {
+			$this->keyEmail = $keyEmail;
 		}
 
-		private function sendConfirmationEmail(PDO $db, $email) {
+		/**
+		 * @return string
+		 */
+		public function getEmailVerified(): string {
+			return $this->emailVerified;
+		}
+
+		/**
+		 * @param string $emailVerified
+		 */
+		public function setEmailVerified(string $emailVerified): void {
+			$this->emailVerified = $emailVerified;
+		}
+
+		/***************************************
+		 * ------- GET USER DATA BY EMAIL -------
+		 ***************************************
+		 * @param PDO    $db
+		 * @param string $email
+		 * @return mixed
+		 */
+		private function sendConfirmationEmail(PDO $db, string $email) {
 			// Create the confirm key
 			$keyEmail = md5(microtime(TRUE) * 100000);
 
@@ -160,20 +192,6 @@
 			---------------
 			Ceci est un mail automatique, Merci de ne pas y répondre.';
 			mail($to, $subject, $message, $header); // Envoi du mail
-		}
-
-		/**
-		 * @return string
-		 */
-		public function getKeyEmail(): string {
-			return $this->keyEmail;
-		}
-
-		/**
-		 * @param string $keyEmail
-		 */
-		public function setKeyEmail(string $keyEmail): void {
-			$this->keyEmail = $keyEmail;
 		}
 
 	}

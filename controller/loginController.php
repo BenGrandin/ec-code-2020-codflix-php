@@ -38,7 +38,7 @@
 		if ($userData && sizeof($userData) != 0) {
 			// Set session
 			$_SESSION['user_id'] = $userData['id'];
-			$_SESSION['is_active'] = $userData['active'];
+			$_SESSION['emailVerified'] = $userData['emailVerified'];
 
 			header('location: index.php ');
 		} else {

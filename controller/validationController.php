@@ -7,17 +7,15 @@
 	 ***************************/
 
 	function validationPage() {
-		$is_active = isset($_SESSION['is_active']) ? $_SESSION['is_active'] : false;
+		$emailVerified = isset($_SESSION['emailVerified']) ? $_SESSION['emailVerified'] : false;
 
 		global $sentence;
 		$db = init_db();
-		echo '<pre> TOTO';
-		var_dump($is_active);
-		echo '</pre>';
+
 		$email = $_GET['email'];
 		$keyEmail = $_GET['keyEmail'];
 
-		if ($is_active) { // If account is already active
+		if ($emailVerified) { // If account is already active
 			$sentence = "Votre compte est déjà actif !";
 		} else {
 
