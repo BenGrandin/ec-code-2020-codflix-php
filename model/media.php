@@ -20,6 +20,19 @@ class Media {
     $this->setTitle( $media->title );
   }
 
+  static public function getDbMedias(){
+	  // Open database connection
+	  $db = init_db();
+
+	  $req = $db->prepare("SELECT * FROM media");
+	  $req->execute();
+
+	  // Close databse connection
+	  $db = null;
+
+	  return $req->fetchAll();
+  }
+
   /***************************
   * -------- SETTERS ---------
   ***************************/

@@ -5,7 +5,7 @@
 	require_once('controller/contactController.php');
 	require_once('controller/loginController.php');
 	require_once('controller/signupController.php');
-	require_once('controller/mediaController.php');
+	require_once('controller/mediaListController.php');
 	require_once('controller/validationController.php');
 	require_once('controller/profileController.php');
 	/**************************
