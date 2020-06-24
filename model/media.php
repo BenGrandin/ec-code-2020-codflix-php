@@ -84,9 +84,12 @@ class Media {
     return $this->trailer_url;
   }
 
-  /***************************
-  * -------- GET LIST --------
-  ***************************/
+	/***************************
+	 * -------- GET LIST --------
+	 **************************
+	 * @param string $title
+	 * @return array
+	 */
 
   public static function filterMedias( $title ) {
 
@@ -96,7 +99,7 @@ class Media {
     $req  = $db->prepare( "SELECT * FROM media WHERE title = ? ORDER BY release_date DESC" );
     $req->execute( array( '%' . $title . '%' ));
 
-    // Close databse connection
+    // Close database connection
     $db   = null;
 
     return $req->fetchAll();

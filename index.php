@@ -7,7 +7,7 @@
 	require_once('controller/signupController.php');
 	require_once('controller/mediaController.php');
 	require_once('controller/validationController.php');
-	require_once('controller/profilController.php');
+	require_once('controller/profileController.php');
 	/**************************
 	 * ----- HANDLE ACTION -----
 	 ***************************/
@@ -59,8 +59,6 @@
 
 	else:
 		if ($user_id) {
-
-//			var_dump($_SESSION);
 			if ($is_active) {
 				mediaPage();
 			} else {

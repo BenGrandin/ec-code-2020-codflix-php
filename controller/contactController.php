@@ -7,8 +7,7 @@
 	}
 
 	function contact() {
-		require('view/auth/contactView.php');
-
+		require('view/contactView.php');
 	}
 
 	function sendEmail($post) {
