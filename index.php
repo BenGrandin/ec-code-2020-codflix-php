@@ -6,6 +6,7 @@
 	require_once('controller/loginController.php');
 	require_once('controller/signupController.php');
 	require_once('controller/mediaListController.php');
+	require_once('controller/mediaController.php');
 	require_once('controller/validationController.php');
 	require_once('controller/profileController.php');
 	/**************************
@@ -25,7 +26,7 @@
 
 			case 'login':
 				if ($user_id) {
-					mediaPage();
+					mediaListPage();
 				} else {
 					if (!empty($_POST)) login();
 					else loginPage();
@@ -46,6 +47,14 @@
 
 			case 'signup':
 				if ($user_id) {
+					mediaListPage();
+				} else {
+					signupPage();
+				}
+				break;
+
+			case 'media':
+				if ($user_id) {
 					mediaPage();
 				} else {
 					signupPage();
@@ -60,7 +69,7 @@
 	else:
 		if ($user_id) {
 			if ($emailVerified) {
-				mediaPage();
+				mediaListPage();
 			} else {
 				validationPage();
 			}

@@ -13,7 +13,9 @@
         <div class="row no-gutters">
             <div class="col-md-6 full-height bg-white">
                 <div class="auth-container">
-                    <h2><span>Cod</span>'Flix</h2>
+
+                    <a href='index.php'><h2><span>Cod</span>'Flix</h2></a>
+
                     <h3>Inscription</h3>
 
                     <form method="post" action="index.php?action=signup" class="custom-form">
@@ -35,7 +37,7 @@
 
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-md-6 mb-0 mb-sm-2">
                                     <input type="submit" name="Valider" class="btn btn-block bg-red"/>
                                 </div>
                                 <div class="col-md-6">

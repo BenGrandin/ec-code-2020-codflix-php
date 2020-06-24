@@ -37,7 +37,7 @@
 			$req = $db->prepare("SELECT * FROM user WHERE id = ?");
 			$req->execute(array($id));
 
-			// Close databse connection
+			// Close database connection
 			$db = null;
 
 			return $req->fetch();
@@ -101,7 +101,7 @@
 
 
 			$this->sendConfirmationEmail($db, $email);
-			// Close databse connection
+			// Close database connection
 			$db = null;
 
 		}

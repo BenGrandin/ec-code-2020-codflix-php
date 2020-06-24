@@ -6,11 +6,13 @@
 	 * ----- LOAD HOME PAGE -----
 	 ***************************/
 
-	function mediaPage() {
+	function mediaListPage() {
 
 		$search = isset($_GET['title']) ? $_GET['title'] : null;
 		//  $medias = Media::filterMedias( $search );
 		$medias = Media::getDbMedias();
+
+
 
 		require('view/mediaListView.php');
 

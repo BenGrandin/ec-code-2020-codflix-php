@@ -27,8 +27,11 @@
 
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col">
-                                        <button type="submit" class="btn bg-red">Send</button>
+                                    <div class="col-md-6 col-md-6 mb-0 mb-sm-2">
+                                        <input type="submit" name="Valider" class="btn btn-block bg-red"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="index.php" class="btn btn-block bg-blue">Retour</a>
                                     </div>
                                 </div>
                             </div>
