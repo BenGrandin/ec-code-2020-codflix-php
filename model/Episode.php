@@ -2,41 +2,36 @@
 
 	require_once('database.php');
 
-	class Media {
+	class Episode {
 
 		protected int $id;
-		protected $genre_id;
+		protected $show_id;
 		protected $title;
 		protected $type;
-		protected $status;
+		protected $season_number;
+		protected $episode_number;
 		protected $release_date;
+		protected $still_path;
 		protected string $summary;
 		protected $trailer_url;
 
 		public function __construct($media) {
-			$this->setId(isset($media->id) ? $media->id : null);
-			$this->setGenreId(isset($media->genre_id) ? $media->genre_id : null);
-			$this->setTitle(isset($media->id) ? $media->id : null);
-			$this->setType(isset($media->type) ? $media->type : null);
-			$this->setStatus(isset($media->status) ? $media->status : null);
-			$this->setReleaseDate(isset($media->release_date) ? $media->release_date : null);
-			$this->setSummary(isset($media->summary) ? $media->summary : null);
-			$this->setTrailerUrl(isset($media->trailer_url) ? $media->trailer_url : null);
+
 		}
 
 		/**************************************
-		 * -------- GET MEDIA DATA BY ID --------
+		 * -------- GET EPISODE DATA BY ID --------
 		 **************************************
 		 * @param int $id
 		 * @return Media
 		 */
 
-		public static function getMediaById(int $id) {
+		public static function getDbEpisodeById(int $id) {
 
 			// Open database connection
 			$db = init_db();
 
-			$req = $db->prepare("SELECT * FROM media WHERE id = ?");
+			$req = $db->prepare("SELECT * FROM episodes WHERE id = ?");
 			$req->execute(array($id));
 
 			// Close database connection
@@ -47,13 +42,13 @@
 		}
 
 		/**************************************
-		 * -------- GET ALL DATA MEDIAS --------
+		 * -------- GET ALL DATA EPISODES --------
 		 **************************************/
-		static public function getDbMedias() {
+		static public function getDbEpisodes() {
 			// Open database connection
 			$db = init_db();
 
-			$req = $db->prepare("SELECT * FROM media");
+			$req = $db->prepare("SELECT * FROM episodes");
 			$req->execute();
 
 			// Close database connection
@@ -61,47 +56,33 @@
 
 			return $req->fetchAll();
 		}
-		
-		/***************************
-		 * -------- GET LIST --------
-		 **************************
-		 * @param string $title
+
+		/**********************************************
+		 * ----- GET DATA EPISODES FILTER BY SHOW -----
+		 **********************************************
+		 * @param int $id
 		 * @return array
 		 */
 
-		public static function filterMedias($title) {
-
+		static public function getDbEpisodesByShow($id) {
 			// Open database connection
 			$db = init_db();
 
-			$req = $db->prepare("SELECT * FROM media WHERE title = ? ORDER BY release_date DESC");
-			$req->execute(array('%' . $title . '%'));
+			$req = $db->prepare("SELECT * FROM episodes WHERE show_id = ?");
+			$req->execute(array($id));
 
 			// Close database connection
 			$db = null;
 
 			return $req->fetchAll();
-
 		}
-
-		/***************************
-		 * -------- GETTERS ---------
-		 ***************************/
 
 		public function getId() {
 			return $this->id;
 		}
 
-		/***************************
-		 * -------- SETTERS ---------
-		 ***************************/
-
 		public function setId($id) {
 			$this->id = $id;
-		}
-
-		public function getGenreId() {
-			return $this->genre_id;
 		}
 
 		public function setGenreId($genre_id) {
@@ -122,14 +103,6 @@
 
 		public function setType($type) {
 			$this->type = $type;
-		}
-
-		public function getStatus() {
-			return $this->status;
-		}
-
-		public function setStatus($status) {
-			$this->status = $status;
 		}
 
 		public function getReleaseDate() {
@@ -154,6 +127,14 @@
 
 		public function setTrailerUrl($trailer_url): void {
 			$this->trailer_url = $trailer_url;
+		}
+
+		public function getSeasonNumber() {
+			return $this->season_number;
+		}
+
+		public function setSeasonNumber($season_number): void {
+			$this->season_number = $season_number;
 		}
 
 
