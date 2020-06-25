@@ -10,6 +10,17 @@
 	global $new_password;
 	global $new_password_confirm;
 
+	function deleteUser() {
+		$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : false;
+
+		$user = User::getUserById($user_id);
+
+		if (!empty($_POST)) {
+			checkForm($user);
+			User::deleteUser($user_id);
+		}
+
+	}
 
 	function profilePage() {
 
@@ -47,7 +58,6 @@
 			var_dump($_POST);
 			$email = htmlentities(strtolower($_POST['email']));
 			$new_password = htmlentities(trim($_POST['new_password']));
-			echo 'okkkk';
 
 			if ($email !== $user['email']) {
 				$success_msg .= 'Votre email a bien été modifiée';

@@ -1,4 +1,4 @@
-<?php ob_start();	?>
+<?php ob_start(); ?>
 <div class="profileView container">
 
     <div class="row justify-content-center">
@@ -6,6 +6,8 @@
             <h1>Mon profil</h1>
         </div>
     </div>
+
+
     <div class="row justify-content-center mt-5">
 
 		<?php if ($edit_mode) { ?>
@@ -24,25 +26,30 @@
                 <div class="form-group">
                     <label for="new_password">Votre nouveau mot de passe</label>
                     <input type="password" name="new_password" id="new_password" class="form-control"/>
-                </div>    <div class="form-group">
+                </div>
+                <div class="form-group">
                     <label for="new_password_confirm">Confirmez votre nouveau mot de passe</label>
                     <input type="password" name="new_password_confirm" id="new_password_confirm" class="form-control"/>
                 </div>
 
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-6 col-md-6 mb-0 mb-sm-2">
+                        <div class="col-12">
                             <input type="submit" name="Valider" class="btn btn-block bg-red"/>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-12 mt-2">
                             <a href="index.php?action=profile" class="btn btn-block bg-blue">Retour</a>
                         </div>
+                        <div class="col-12 mt-5">
+                            <div href="index.php?action=profile" class="btn btn-block bg-red">Supprimer son compte</div>
+                        </div>
+
                     </div>
                 </div>
 
                 <span class="error-msg">
               <?= isset($error_msg) ? $error_msg : ''; ?>
-            </span>   <span class="text-success">
+            </span> <span class="text-success">
               <?= isset($success_msg) ? $success_msg : ''; ?>
             </span>
             </form>

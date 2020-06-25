@@ -69,6 +69,19 @@
 			return $req->fetch();
 		}
 
+		static public function deleteUser($id) {
+			$db = init_db();
+
+			$req = $db->prepare("DELETE FROM user WHERE id = ?");
+			$req->execute(array($id));
+
+			// Close databse connection
+			$db = null;
+			session_destroy();
+
+			header('location: index.php');
+		}
+
 		public function getId() {
 			return $this->id;
 		}
@@ -132,82 +145,90 @@
 
 		}
 
-		/***************************************
-		 * ------- GET USER DATA BY EMAIL -------
-		 ***************************************
-		 * @param string $email
-		 * @return mixed
-		 */
 
-		public function getUserByEmail($email = null) {
-			// Open database connection
-			$db = init_db();
 
-			$req = $db->prepare("SELECT * FROM user WHERE email = ?");
-			if (!$email) {
-				$email = $this->getEmail();
-			}
-			$req->execute(array($email));
+	/***************************************
+	 * ------- GET USER DATA BY EMAIL -------
+	 ***************************************
+	 * @param string $email
+	 * @return mixed
+	 */
 
-			// Close database connection
-			$db = null;
+	public
+	function getUserByEmail($email = null) {
+		// Open database connection
+		$db = init_db();
 
-			return $req->fetch();
+		$req = $db->prepare("SELECT * FROM user WHERE email = ?");
+		if (!$email) {
+			$email = $this->getEmail();
 		}
+		$req->execute(array($email));
 
-		/**
-		 * @return string
-		 */
-		public function getKeyEmail(): string {
-			return $this->keyEmail;
-		}
+		// Close database connection
+		$db = null;
 
-		/**
-		 * @param string $keyEmail
-		 */
-		public function setKeyEmail(string $keyEmail): void {
-			$this->keyEmail = $keyEmail;
-		}
+		return $req->fetch();
+	}
 
-		/**
-		 * @return string
-		 */
-		public function getEmailVerified(): string {
-			return $this->emailVerified;
-		}
+	/**
+	 * @return string
+	 */
+	public
+	function getKeyEmail(): string {
+		return $this->keyEmail;
+	}
 
-		/**
-		 * @param string $emailVerified
-		 */
-		public function setEmailVerified(string $emailVerified): void {
-			$this->emailVerified = $emailVerified;
-		}
+	/**
+	 * @param string $keyEmail
+	 */
+	public
+	function setKeyEmail(string $keyEmail): void {
+		$this->keyEmail = $keyEmail;
+	}
 
-		/***************************************
-		 * ------- GET USER DATA BY EMAIL -------
-		 ***************************************
-		 * @param PDO    $db
-		 * @param string $email
-		 * @return mixed
-		 */
-		private function sendConfirmationEmail(PDO $db, string $email) {
-			// Create the confirm key
-			$keyEmail = md5(microtime(TRUE) * 100000);
+	/**
+	 * @return string
+	 */
+	public
+	function getEmailVerified(): string {
+		return $this->emailVerified;
+	}
 
-			// Update keyEmail of the user
-			$stmt = $db->prepare("UPDATE user SET keyEmail=:keyEmail WHERE email=:email");
-			$stmt->execute([
-				'keyEmail' => $keyEmail,
-				'email' => $email
-			]);
+	/**
+	 * @param string $emailVerified
+	 */
+	public
+	function setEmailVerified(string $emailVerified): void {
+		$this->emailVerified = $emailVerified;
+	}
 
-			// Prepare email for link activation
-			$to = $email;
-			$subject = "Activer votre compte";
-			$header = "From: inscription@votresite.com";
+	/***************************************
+	 * ------- GET USER DATA BY EMAIL -------
+	 ***************************************
+	 * @param PDO    $db
+	 * @param string $email
+	 * @return mixed
+	 */
+	private
+	function sendConfirmationEmail(PDO $db, string $email) {
+		// Create the confirm key
+		$keyEmail = md5(microtime(TRUE) * 100000);
 
-			// The link is compose with keyEmail
-			$message = 'Bienvenue sur VotreSite,
+		// Update keyEmail of the user
+		$stmt = $db->prepare("UPDATE user SET keyEmail=:keyEmail WHERE email=:email");
+		$stmt->execute([
+			'keyEmail' => $keyEmail,
+			'email' => $email
+		]);
+
+		// Prepare email for link activation
+		$to = $email;
+		$subject = "Activer votre compte";
+		$header = "From: inscription@votresite.com";
+
+		// The link is compose with keyEmail
+		$message = 'Bienvenue sur VotreSite,
 			 
 			Pour activer votre compte, veuillez cliquer sur le lien ci-dessous
 			ou copier/coller dans votre navigateur Internet.
@@ -217,7 +238,7 @@
 			 
 			---------------
 			Ceci est un mail automatique, Merci de ne pas y répondre.';
-			mail($to, $subject, $message, $header); // Envoi du mail
-		}
+		mail($to, $subject, $message, $header); // Envoi du mail
+	}
 
 	}
