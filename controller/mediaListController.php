@@ -1,6 +1,6 @@
 <?php
 
-	require_once('model/media.php');
+	require_once('model/Media.php');
 
 	/***************************
 	 * ----- LOAD HOME PAGE -----

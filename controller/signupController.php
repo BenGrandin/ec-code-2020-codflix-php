@@ -1,6 +1,6 @@
 <?php
 
-	require_once('model/user.php');
+	require_once('model/User.php');
 	include('utils/utils.php');
 
 	/****************************

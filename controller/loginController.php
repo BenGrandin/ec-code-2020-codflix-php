@@ -2,7 +2,7 @@
 
 	session_start();
 
-	require_once('model/user.php');
+	require_once('model/User.php');
 
 	/****************************
 	 * ----- LOAD LOGIN PAGE -----

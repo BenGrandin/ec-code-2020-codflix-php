@@ -1,5 +1,5 @@
 <?php
-	require_once('model/user.php');
+	require_once('model/User.php');
 
 	if (isset($_POST['send'])) {
 		sendEmail($_POST['send']);
