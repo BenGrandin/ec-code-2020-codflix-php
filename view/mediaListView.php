@@ -2,21 +2,18 @@
 <script>
 	// ToDo : #form - Prevent default onsubmit
 	const onFormChange = () => {
-		console.log("toto")
-
 		const {value: title} = document.getElementById('title');
 		const {value: type} = document.getElementById('type');
 		const {value: gender_id} = document.getElementById('gender_id');
-		const {value: year} = document.getElementById('year');
+		const {value: release_date} = document.getElementById('release_date');
 
 		let queryParams = "";
 		if (title.length) queryParams += `&title=${title}`;
 		if (type.length) queryParams += `&type=${type}`;
 		if (gender_id.length) queryParams += `&gender_id=${gender_id}`;
-		if (year.length) queryParams += `&year=${year}`;
-
+		if (release_date.length) queryParams += `&release_date=${release_date}`;
 		const url = `index.php?action=mediaListDisplayer${queryParams}`;
-
+		
 		fetch(url)
 			.then(data => data.text())
 			.then(innerHTML => {
@@ -41,8 +38,8 @@
         <div class="col-auto">
             <select onchange="onFormChange();" class="custom-select mr-sm-2" id="type">
                 <option value="" selected>Type</option>
-                <option value="1">Film</option>
-                <option value="2">Série</option>
+                <option value="movie">Film</option>
+                <option value="tvshow">Série</option>
             </select>
         </div>
 
@@ -56,8 +53,8 @@
         </div>
 
         <div class="col-auto">
-            <select onchange="onFormChange()" class="custom-select mr-sm-2" id="year">
-                <option selected>Année</option>
+            <select onchange="onFormChange()" class="custom-select mr-sm-2" id="release_date">
+                <option value="" selected>Année</option>
 				<?php
 					for ($i = date("Y"); $i > 1900; $i--) {
 						echo "<option value='$i'>$i</option>";

@@ -71,17 +71,25 @@
 		 **************************
 		 * @param string $title
 		 * @param string $gender_id
+		 * @param string $type
 		 * @return array
 		 */
 
-		public static function filterMedias($title ="", $gender_id="") {
+		public static function filterMedias($title = "", $gender_id = "", $type = "", $release_date = "") {
 
 			// Open database connection
 			$db = init_db();
-			$req = 'SELECT * FROM media WHERE title LIKE "%' . $title . '%" && gender_id LIKE "%' . $gender_id . '%"';
+			$req = 'SELECT * FROM media WHERE title LIKE "%' . $title . '%"'
+				. '&& gender_id LIKE "%' . $gender_id . '%"'
+				. '&& type LIKE "%' . $type . '%"';
+
+			if ($release_date) {
+				$req .= '&& release_date >= "' . $release_date . '-00-00"'
+					. '&& release_date <= "' . $release_date . '-12-30"';
+			}
+
 			$req .= "ORDER BY release_date DESC";
 
-			echo $req;
 			$req = $db->prepare($req);
 			$req->execute();
 
