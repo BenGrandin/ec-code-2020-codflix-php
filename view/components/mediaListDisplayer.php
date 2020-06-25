@@ -23,12 +23,16 @@
                     <div>
 						<?= $media['title']; ?>
                     </div>
-                    <span class="type badge badge-secondary m-1">
+					<?php if ($_GET['action'] !== 'tvshow') { ?>
+
+                        <span class="type badge badge-secondary m-1">
 					<?php
 						if ($media['type'] === "movie") $media['type'] = "Film";
 						if ($media['type'] === "tvshow") $media['type'] = "Série";
 						echo $media['type']; ?>
-                    </span></div>
+                    </span>
+					<?php } ?>
+                </div>
                 <div class="summary">
 					<?= $media['summary']; ?>
                 </div>

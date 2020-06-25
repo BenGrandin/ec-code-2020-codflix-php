@@ -63,8 +63,6 @@
     </div>
 </form>
 <hr class="w-75 my-4">
-<?php require('components/mediaListDisplayer.php') ?>
-
 
 <?php $content = ob_get_clean(); ?>
 
