@@ -18,7 +18,9 @@
         <h2 class="title">Bienvenue</h2>
         <div class="sidebar-menu">
             <ul>
-                <li class="<?php if (!isset($_GET['action'])) echo 'active'; ?>"><a href="index.php">Médias</a></li>
+                <li class="<?php
+					if (!isset($_GET['action']) || ($_GET['action'] === "tvshow" || $_GET['action'] === "movie")) echo 'active';
+				?>"><a href="index.php">Médias</a></li>
                 <li class="<?php if (isset($_GET['action']) && $_GET['action'] === "profile") echo 'active'; ?>"><a
                             href="index.php?action=profile">Mon profil</a></li>
                 <li class="<?php if (isset($_GET['action']) && $_GET['action'] === "history") echo 'active'; ?>"><a
@@ -48,9 +50,9 @@
 			<?php
 				if ($_GET['action'] === 'history') { ?>
                     <div class="row justify-content-center">
-                            <button class="button-delete bg-red rounded p-1 m-1 mb-5">
-                                Supprimer tout mon historique
-                            </button>
+                        <button class="button-delete bg-red rounded p-1 m-1 mb-5">
+                            Supprimer tout mon historique
+                        </button>
 
                     </div>
 				<?php } ?>
