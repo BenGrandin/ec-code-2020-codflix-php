@@ -69,9 +69,13 @@
 				}
 				break;
 
-
 			case 'validation':
 				validationPage();
+				break;
+
+			case 'mediaListDisplayer':
+				mediaListDisplayer();
+				break;
 		endswitch;
 
 	else:
