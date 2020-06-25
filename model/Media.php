@@ -77,9 +77,10 @@
 
 			// Open database connection
 			$db = init_db();
+			$query = 'SELECT * FROM media WHERE title LIKE "%' . $title . '%" ORDER BY release_date DESC';
 
-			$req = $db->prepare("SELECT * FROM media WHERE title = ? ORDER BY release_date DESC");
-			$req->execute(array('%' . $title . '%'));
+			$req = $db->prepare($query);
+			$req->execute();
 
 			// Close database connection
 			$db = null;
