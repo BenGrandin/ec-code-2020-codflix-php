@@ -9,7 +9,7 @@
 	function mediaPage() {
 
 		$id = isset($_GET['id']) ? $_GET['id'] : null;
-		$is_episode = isset($_GET['is_episode']);
+		$is_episode = $_GET['is_episode'];
 
 		if ($is_episode) {
 			$media = Episode::getDbEpisodeById($id);

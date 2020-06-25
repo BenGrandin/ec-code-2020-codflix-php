@@ -22,9 +22,6 @@
 				document.querySelector('.media-list').replaceWith(node);
 			})
 	};
-	const toto = () => {
-		console.log("toto")
-	}
 </script>
 
 <form method="get" id="form">
