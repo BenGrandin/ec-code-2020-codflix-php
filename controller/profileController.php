@@ -55,7 +55,6 @@
 			checkForm($user);
 
 
-			var_dump($_POST);
 			$email = htmlentities(strtolower($_POST['email']));
 			$new_password = htmlentities(trim($_POST['new_password']));
 

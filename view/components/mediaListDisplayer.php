@@ -1,4 +1,4 @@
-<div class="media-list">
+<div class="media-list justify-content-center">
 
 	<?php foreach ($medias as $media):
 		$id = $media['id'];
@@ -25,15 +25,6 @@
                     <div>
 						<?= $media['title']; ?>
                     </div>
-					<?php if ($_GET['action'] !== 'history') { ?>
-
-                        <div class="type badge badge-secondary m-1">
-							<?php
-								if ($media['type'] === "movie") $media['type'] = "Film";
-								if ($media['type'] === "tvshow") $media['type'] = "Série";
-								echo $media['type']; ?>
-                        </div>
-					<?php } ?>
 					<?php if ($_GET['action'] !== 'tvshow') { ?>
 
                         <span class="type badge badge-secondary m-1">
@@ -48,11 +39,34 @@
 					<?= $media['summary']; ?>
                 </div>
             </a>
-	        <?php if ($_GET['action'] == 'history') { ?>
-
-                <div class="button-delete w-25 badge bg-red mr-1">Supprimer</div>
-	        <?php } ?>
+			<?php if ($_GET['action'] === 'history') { ?>
+                <button value="<?= $media['id'] ?>" class="button-delete rounded p-1 m-1 mr-1">
+                    Supprimer
+                </button>
+			<?php } ?>
         </div>
 
 	<?php endforeach; ?>
+
+
 </div>
+
+
+<script>
+
+	const buttonsDelete = [...document.getElementsByClassName('button-delete')];
+	console.log("buttonsDelete:", buttonsDelete[0]);
+	for (const btn of buttonsDelete) {
+
+		btn.addEventListener("click", ({target}) => {
+			const {value} = target;
+			const url = "index.php?action=history&history_id=" + 2;
+			console.log(url);
+
+			// Value is actually false because i get the id of the media
+			//  and not the id of history
+			fetch(url);
+		})
+		console.log(btn)
+	}
+</script>

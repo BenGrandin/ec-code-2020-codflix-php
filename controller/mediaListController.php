@@ -28,11 +28,18 @@
 		$version = isset($_GET['version']) ? $_GET['version'] : null;
 		$action = isset($_GET['action']) ? $_GET['action'] : null;
 
+		$history_id = isset($_GET['history_id']) ? $_GET['history_id'] : null;
+		if ($version) {
+			$action = $version;
+		}
 
 		if ($action === 'history') {
 			$user_id = $_SESSION['user_id'];
 
-			$medias = User::getHistoryMedias($title, $gender_id, $type, $release_date,$user_id);
+			if (isset($history_id)) {
+				User::deleteHistoryById($history_id);
+			}
+			$medias = User::getHistoryMedias($title, $gender_id, $type, $release_date, $user_id);
 		} else {
 			$medias = Media::getFilterMedias($title, $gender_id, $type, $release_date);
 		}

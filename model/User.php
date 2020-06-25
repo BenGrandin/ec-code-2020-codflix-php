@@ -30,7 +30,6 @@
 				'password' => hash('sha256', $password),
 				'id' => $id
 			));
-			var_dump($req);
 			// Close database connection
 			$db = null;
 		}
@@ -46,6 +45,34 @@
 
 			// Close database connection
 			$db = null;
+		}
+
+		public static function deleteHistories() {
+			$user_id = $_SESSION['user_id'];
+			// Open database connection
+			$db = init_db();
+
+			$req = $db->prepare("DELETE FROM favorites WHERE user_id = $user_id");
+			$req->execute();
+
+			// Close databse connection
+			$db = null;
+		}
+
+		static function deleteHistoryById($history_id) {
+
+			$user_id = $_SESSION['user_id'];
+			// Open database connection
+			$db = init_db();
+
+
+			$req = $db->prepare("SELECT * FROM favorites WHERE user_id = $user_id AND media_id = $history_id");
+			$req->execute();
+
+			// Close database connection
+			$db = null;
+
+			return $req->fetch();
 		}
 
 		/**************************************
@@ -89,17 +116,18 @@
 
 			$req = 'SELECT * FROM history INNER JOIN media ON history.media_id = media.id';
 			$req .= ' WHERE user_id =' . $user_id
-				. '&& title LIKE "%' . $title . '%"'
-				. '&& gender_id LIKE "%' . $gender_id . '%"'
-				. '&& type LIKE "%' . $type . '%"';
+				. ' && title LIKE "%' . $title . '%"'
+				. ' && gender_id LIKE "%' . $gender_id . '%"'
+				. ' && type LIKE "%' . $type . '%"';
 
 			if ($release_date) {
-				$req .= '&& release_date >= "' . $release_date . '-00-00"'
-					. '&& release_date <= "' . $release_date . '-12-30"';
+				$req .= ' && release_date >= "' . $release_date . '-00-00"'
+					. ' && release_date <= "' . $release_date . '-12-30"';
 			}
 			$req .= " ORDER BY start_date DESC";
 
-			$req = $db->prepare($req);
+			$req = $db->prepare('SELECT * FROM history INNER JOIN media ON history.media_id = media.id WHERE user_id =39 ORDER BY start_date DESC
+');
 			$req->execute();
 
 			return $req->fetchAll();

@@ -10,6 +10,7 @@
 	require_once('controller/tvshowController.php');
 	require_once('controller/validationController.php');
 	require_once('controller/profileController.php');
+
 	/**************************
 	 * ----- HANDLE ACTION -----
 	 ***************************/
