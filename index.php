@@ -73,6 +73,10 @@
 				validationPage();
 				break;
 
+			case 'history':
+				mediaListPage();
+				break;
+
 			case 'mediaListDisplayer':
 				mediaListDisplayer();
 				break;

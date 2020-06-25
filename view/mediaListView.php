@@ -6,12 +6,15 @@
 		const {value: type} = document.getElementById('type');
 		const {value: gender_id} = document.getElementById('gender_id');
 		const {value: release_date} = document.getElementById('release_date');
+		const {value: version} = document.getElementById('version');
 
 		let queryParams = "";
 		if (title.length) queryParams += `&title=${title}`;
 		if (type.length) queryParams += `&type=${type}`;
 		if (gender_id.length) queryParams += `&gender_id=${gender_id}`;
 		if (release_date.length) queryParams += `&release_date=${release_date}`;
+		if (release_date.length) queryParams += `&release_date=${release_date}`;
+		if (version.length) queryParams += `&version=${version}`;
 		const url = `index.php?action=mediaListDisplayer${queryParams}`;
 
 		fetch(url)
@@ -24,7 +27,8 @@
 	};
 </script>
 <div class="row justify-content-center text-center">
-    <h1 class="col">Bienvenue! </h1>
+	<input hidden id="version" value="<?= $action ?>"/>
+    <h1 class="col" ><?=  $action ==='history'? 'Mon historique' : 'Bienvenue !' ?></h1>
 </div>
 
 <hr class="d-sm-flex d-none w-75 my-3 my-md-5 bg-red">

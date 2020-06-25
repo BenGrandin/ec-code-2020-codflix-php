@@ -20,6 +20,7 @@
           <ul>
             <li class="<?php if(!isset($_GET['action'])) echo  'active'; ?>"><a href="index.php">Médias</a></li>
             <li class="<?php if(isset($_GET['action']) && $_GET['action'] === "profile") echo  'active'; ?>"><a href="index.php?action=profile">Mon profil</a></li>
+            <li class="<?php if(isset($_GET['action']) && $_GET['action'] === "history") echo  'active'; ?>"><a href="index.php?action=history">Mon historique</a></li>
             <li><a href="index.php?action=contact">Nous contacter</a></li>
             <li><a href="index.php?action=logout">Me déconnecter</a></li>
           </ul>

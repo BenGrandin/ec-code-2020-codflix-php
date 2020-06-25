@@ -62,17 +62,6 @@
 </div>
 
 
-<?php
-	//	$isSignUpSuccess =
-	//	echo "<pre>";
-	//	var_dump($isSignUpSuccess);
-	//	echo "</pre>";
-	//	if($isSignUpSuccess){
-	//		header("Location: index.php?action=login");
-	//    }
-
-?>
-
 <?php $content = ob_get_clean(); ?>
 
 <?php require(__DIR__ . '/../base.php'); ?>

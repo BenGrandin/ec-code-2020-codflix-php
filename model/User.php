@@ -82,6 +82,29 @@
 			header('location: index.php');
 		}
 
+		public static function getHistoryMedias($title, $gender_id, $type, $release_date, $user_id) {
+
+			// Open database connection
+			$db = init_db();
+
+			$req = 'SELECT * FROM history INNER JOIN media ON history.media_id = media.id';
+			$req .= ' WHERE user_id =' . $user_id
+				. '&& title LIKE "%' . $title . '%"'
+				. '&& gender_id LIKE "%' . $gender_id . '%"'
+				. '&& type LIKE "%' . $type . '%"';
+
+			if ($release_date) {
+				$req .= '&& release_date >= "' . $release_date . '-00-00"'
+					. '&& release_date <= "' . $release_date . '-12-30"';
+			}
+			$req .= " ORDER BY start_date DESC";
+
+			$req = $db->prepare($req);
+			$req->execute();
+
+			return $req->fetchAll();
+		}
+
 		public function getId() {
 			return $this->id;
 		}
@@ -146,89 +169,88 @@
 		}
 
 
+		/***************************************
+		 * ------- GET USER DATA BY EMAIL -------
+		 ***************************************
+		 * @param string $email
+		 * @return mixed
+		 */
 
-	/***************************************
-	 * ------- GET USER DATA BY EMAIL -------
-	 ***************************************
-	 * @param string $email
-	 * @return mixed
-	 */
+		public
+		function getUserByEmail($email = null) {
+			// Open database connection
+			$db = init_db();
 
-	public
-	function getUserByEmail($email = null) {
-		// Open database connection
-		$db = init_db();
+			$req = $db->prepare("SELECT * FROM user WHERE email = ?");
+			if (!$email) {
+				$email = $this->getEmail();
+			}
+			$req->execute(array($email));
 
-		$req = $db->prepare("SELECT * FROM user WHERE email = ?");
-		if (!$email) {
-			$email = $this->getEmail();
+			// Close database connection
+			$db = null;
+
+			return $req->fetch();
 		}
-		$req->execute(array($email));
 
-		// Close database connection
-		$db = null;
+		/**
+		 * @return string
+		 */
+		public
+		function getKeyEmail(): string {
+			return $this->keyEmail;
+		}
 
-		return $req->fetch();
-	}
+		/**
+		 * @param string $keyEmail
+		 */
+		public
+		function setKeyEmail(string $keyEmail): void {
+			$this->keyEmail = $keyEmail;
+		}
 
-	/**
-	 * @return string
-	 */
-	public
-	function getKeyEmail(): string {
-		return $this->keyEmail;
-	}
+		/**
+		 * @return string
+		 */
+		public
+		function getEmailVerified(): string {
+			return $this->emailVerified;
+		}
 
-	/**
-	 * @param string $keyEmail
-	 */
-	public
-	function setKeyEmail(string $keyEmail): void {
-		$this->keyEmail = $keyEmail;
-	}
+		/**
+		 * @param string $emailVerified
+		 */
+		public
+		function setEmailVerified(string $emailVerified): void {
+			$this->emailVerified = $emailVerified;
+		}
 
-	/**
-	 * @return string
-	 */
-	public
-	function getEmailVerified(): string {
-		return $this->emailVerified;
-	}
+		/***************************************
+		 * ------- GET USER DATA BY EMAIL -------
+		 ***************************************
+		 * @param PDO    $db
+		 * @param string $email
+		 * @return mixed
+		 */
+		private
+		function sendConfirmationEmail(PDO $db, string $email) {
+			// Create the confirm key
+			$keyEmail = md5(microtime(TRUE) * 100000);
 
-	/**
-	 * @param string $emailVerified
-	 */
-	public
-	function setEmailVerified(string $emailVerified): void {
-		$this->emailVerified = $emailVerified;
-	}
+			// Update keyEmail of the user
+			$stmt = $db->prepare("UPDATE user SET keyEmail=:keyEmail WHERE email=:email");
+			$stmt->execute([
+				'keyEmail' => $keyEmail,
+				'email' => $email
+			]);
 
-	/***************************************
-	 * ------- GET USER DATA BY EMAIL -------
-	 ***************************************
-	 * @param PDO    $db
-	 * @param string $email
-	 * @return mixed
-	 */
-	private
-	function sendConfirmationEmail(PDO $db, string $email) {
-		// Create the confirm key
-		$keyEmail = md5(microtime(TRUE) * 100000);
+			// Prepare email for link activation
+			$to = $email;
+			$subject = "Activer votre compte";
+			$header = "From: inscription@votresite.com";
 
-		// Update keyEmail of the user
-		$stmt = $db->prepare("UPDATE user SET keyEmail=:keyEmail WHERE email=:email");
-		$stmt->execute([
-			'keyEmail' => $keyEmail,
-			'email' => $email
-		]);
-
-		// Prepare email for link activation
-		$to = $email;
-		$subject = "Activer votre compte";
-		$header = "From: inscription@votresite.com";
-
-		// The link is compose with keyEmail
-		$message = 'Bienvenue sur VotreSite,
+			// The link is compose with keyEmail
+			$message = 'Bienvenue sur VotreSite,
 			 
 			Pour activer votre compte, veuillez cliquer sur le lien ci-dessous
 			ou copier/coller dans votre navigateur Internet.
@@ -238,7 +260,7 @@
 			 
 			---------------
 			Ceci est un mail automatique, Merci de ne pas y répondre.';
-		mail($to, $subject, $message, $header); // Envoi du mail
-	}
+			mail($to, $subject, $message, $header); // Envoi du mail
+		}
 
 	}

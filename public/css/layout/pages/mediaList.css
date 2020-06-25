@@ -8,8 +8,15 @@
 
     margin-bottom: 40px;
 }
+.media-list .media-list-container {
+    display: flex;
+    margin-bottom: 40px;
+    flex-direction: column;
+    max-width: 300px;
+    align-items: center;
+}
 
-.media-list .item {
+.media-list .media-list-container .item {
     flex-basis: 24%;
     margin: 4px;
 
@@ -19,23 +26,23 @@
     height: fit-content;
 }
 
-.media-list .tvshow {
+.media-list .media-list-container .tvshow {
     background: var(--color-black);
 }
 
-.media-list .movie {
+.media-list .media-list-container .movie {
     background: var(--color-blue);
 }
 
-.media-list .item .video {
+.media-list .media-list-container .item .video {
     width: 100%;
 }
 
-.media-list .item .video iframe {
+.media-list .media-list-container .item .video iframe {
     width: 100%;
 }
 
-.media-list .item .title {
+.media-list .media-list-container .item .title {
     color: #fff;
     font-weight: bold;
 
@@ -45,9 +52,9 @@
 
 }
 
-.media-list .item .title:after {
+.media-list .media-list-container .item .title:after {
     content: "";
-    width: 20px;
+    width: 75%;
 
     border-bottom: 1px solid var(--color-red);
     margin: 10px auto 0 auto;
@@ -55,47 +62,52 @@
     display: none;
 }
 
-.media-list .item .title .type {
+.media-list .media-list-container .item .title .type {
     background-color: white;
     width: 50px;
     display: none;
 
 }
 
-.media-list .tvshow .title .type {
+.media-list .media-list-container .tvshow .title .type {
     color: var(--color-black);
 }
 
-.media-list .movie .title .type {
+.media-list .media-list-container .movie .title .type {
     color: var(--color-blue);
 }
 
-.media-list .item:hover .title:after {
+.media-list .media-list-container .item:hover .title:after {
     display: block;
 }
 
-.media-list .item:hover {
+.media-list .media-list-container .item:hover {
     text-decoration: none;
 }
 
-.media-list .item:hover .title .type {
+.media-list .media-list-container .item:hover .title .type {
     display: block;
 }
 
-.media-list .item .summary {
+.media-list .media-list-container .item .summary {
     display: none;
     color: #fff;
     padding: 8px 20px;
 }
 
+.media-list .media-list-container .button-delete {
+    border: solid 0.5px ;
 
-.media-list .item:hover .summary {
+}
+
+
+.media-list .media-list-container .item:hover .summary {
     display: block;
 }
 
 
 @media screen and (max-width: 768px) {
-    .media-list .item {
+    .media-list .media-list-container .item {
         flex-basis: 100%;
     }
 }

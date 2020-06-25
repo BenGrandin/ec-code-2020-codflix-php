@@ -75,7 +75,7 @@
 		 * @return array
 		 */
 
-		public static function filterMedias($title = "", $gender_id = "", $type = "", $release_date = "") {
+		public static function getFilterMedias($title = "", $gender_id = "", $type = "", $release_date = "") {
 
 			// Open database connection
 			$db = init_db();
