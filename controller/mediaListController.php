@@ -8,10 +8,10 @@
 
 	function mediaListPage() {
 		// mediaList(); not working
-		$search = isset($_GET['title']) ? $_GET['title'] : null;
-		$medias = Media::filterMedias($search);
+		$title = isset($_GET['title']) ? $_GET['title'] : null;
+		$gender_id = isset($_GET['gender_id']) ? $_GET['gender_id'] : null;
 
-		$search = isset($_GET['title']) ? $_GET['title'] : null;
+		$medias = Media::filterMedias($title, $gender_id);
 
 		require('view/mediaListView.php');
 		require('view/dashboard.php');

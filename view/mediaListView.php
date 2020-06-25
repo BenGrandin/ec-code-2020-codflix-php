@@ -1,21 +1,19 @@
-<?php ob_start();
-	echo '<pre>';
-	var_dump($_GET);
-	echo '</pre>';
-
-	$type = $_GET['type'];
-?>
+<?php ob_start(); ?>
 <script>
 	// ToDo : #form - Prevent default onsubmit
 	const onFormChange = () => {
+		console.log("toto")
+
 		const {value: title} = document.getElementById('title');
 		const {value: type} = document.getElementById('type');
-		const {value: gender} = document.getElementById('gender');
+		const {value: gender_id} = document.getElementById('gender_id');
+		const {value: year} = document.getElementById('year');
 
 		let queryParams = "";
 		if (title.length) queryParams += `&title=${title}`;
 		if (type.length) queryParams += `&type=${type}`;
-		if (gender.length) queryParams += `&gender=${gender}`;
+		if (gender_id.length) queryParams += `&gender_id=${gender_id}`;
+		if (year.length) queryParams += `&year=${year}`;
 
 		const url = `index.php?action=mediaListDisplayer${queryParams}`;
 
@@ -27,18 +25,21 @@
 				document.querySelector('.media-list').replaceWith(node);
 			})
 	};
+	const toto = () => {
+		console.log("toto")
+	}
 </script>
 
-<form method="get"  id="form">
+<form method="get" id="form">
     <div class="form-group row has-btn">
         <div class="col-6 col-lg-4">
-            <input onkeypress="onFormChange()" type="search" id="title" name="title" value="<?= $search; ?>"
+            <input onkeypress="onFormChange()" type="search" id="title" name="title" value="<?= $title; ?>"
                    class="form-control"
                    placeholder="Titre">
         </div>
 
         <div class="col-auto">
-            <select onchange="onFormChange()" class="custom-select mr-sm-2" id="type">
+            <select onchange="onFormChange();" class="custom-select mr-sm-2" id="type">
                 <option value="" selected>Type</option>
                 <option value="1">Film</option>
                 <option value="2">Série</option>
@@ -46,7 +47,7 @@
         </div>
 
         <div class="col-auto">
-            <select class="custom-select mr-sm-2" id="gender">
+            <select onchange="onFormChange();" class="custom-select mr-sm-2" id="gender_id">
                 <option value="" selected>Genre</option>
                 <option value="1">Action</option>
                 <option value="2">Horreur</option>
@@ -55,7 +56,7 @@
         </div>
 
         <div class="col-auto">
-            <select onchange="onFormChange()" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+            <select onchange="onFormChange()" class="custom-select mr-sm-2" id="year">
                 <option selected>Année</option>
 				<?php
 					for ($i = date("Y"); $i > 1900; $i--) {
