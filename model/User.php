@@ -126,8 +126,7 @@
 			}
 			$req .= " ORDER BY start_date DESC";
 
-			$req = $db->prepare('SELECT * FROM history INNER JOIN media ON history.media_id = media.id WHERE user_id =39 ORDER BY start_date DESC
-');
+			$req = $db->prepare($req);
 			$req->execute();
 
 			return $req->fetchAll();

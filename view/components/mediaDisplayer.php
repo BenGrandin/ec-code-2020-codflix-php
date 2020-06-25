@@ -20,7 +20,7 @@
                 <div class="genre_id card-subtitle">
                     <div>
                         <!-- ToDo: make a SQL JOIN to display type -->
-<!--                        <span class="type">--><?//= $media['type']; ?><!--</span> : --><?//= $media['genre_id']; ?>
+                        <span class="type"><?= $media['type']; ?></span> : <?= $media['name']; ?>
                     </div>
                     <div>Durée : <?= $duration; ?>
                     </div>

@@ -40,9 +40,8 @@
 			// Open database connection
 			$db = init_db();
 
-			$req = $db->prepare("SELECT * FROM media WHERE id = ?");
-			$req->execute(array($id));
-
+			$req = $db->prepare("SELECT * FROM media INNER JOIN genre ON genre.id = media.gender_id WHERE media.id = $id");
+			$req->execute();
 			// Close database connection
 			$db = null;
 
@@ -72,6 +71,7 @@
 		 * @param string $title
 		 * @param string $gender_id
 		 * @param string $type
+		 * @param string $release_date
 		 * @return array
 		 */
 
@@ -79,17 +79,16 @@
 
 			// Open database connection
 			$db = init_db();
-			$req = 'SELECT * FROM media WHERE title LIKE "%' . $title . '%"'
-				. '&& gender_id LIKE "%' . $gender_id . '%"'
-				. '&& type LIKE "%' . $type . '%"';
+			$req = 'SELECT * FROM media  INNER JOIN genre ON genre.id = media.gender_id WHERE title LIKE "%' . $title . '%"'
+				. ' && gender_id LIKE "%' . $gender_id . '%"'
+				. ' && type LIKE "%' . $type . '%"';
 
 			if ($release_date) {
 				$req .= '&& release_date >= "' . $release_date . '-00-00"'
 					. '&& release_date <= "' . $release_date . '-12-30"';
 			}
 
-			$req .= "ORDER BY release_date DESC";
-
+			$req .= " ORDER BY release_date DESC";
 			$req = $db->prepare($req);
 			$req->execute();
 
