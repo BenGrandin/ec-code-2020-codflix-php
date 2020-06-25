@@ -13,7 +13,7 @@
 		if (gender_id.length) queryParams += `&gender_id=${gender_id}`;
 		if (release_date.length) queryParams += `&release_date=${release_date}`;
 		const url = `index.php?action=mediaListDisplayer${queryParams}`;
-		
+
 		fetch(url)
 			.then(data => data.text())
 			.then(innerHTML => {

@@ -22,14 +22,40 @@
 			endif;
 		}
 
+		static public function updateUserPassword($id, $password) {
+			$db = init_db();
+
+			$req = $db->prepare("UPDATE user SET  password = :password WHERE id = :id;");
+			$req->execute(array(
+				'password' => hash('sha256', $password),
+				'id' => $id
+			));
+			var_dump($req);
+			// Close database connection
+			$db = null;
+		}
+
+		static public function updateUserEmail($id, $email) {
+			$db = init_db();
+
+			$req = $db->prepare("UPDATE user SET  email = :email WHERE id = :id;");
+			$req->execute(array(
+				'password' => hash('sha256', $email),
+				'id' => $id
+			));
+
+			// Close database connection
+			$db = null;
+		}
+
 		/**************************************
 		 * -------- GET USER DATA BY ID --------
 		 **************************************
 		 * @param int $id
-		 * @return User
+		 * @return mixed
 		 */
 
-		public static function getUserById(int $id): User {
+		public static function getUserById($id) {
 
 			// Open database connection
 			$db = init_db();
