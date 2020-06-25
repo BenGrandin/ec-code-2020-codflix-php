@@ -23,16 +23,21 @@
 			})
 	};
 </script>
+<div class="row justify-content-center text-center">
+    <h1 class="col">Bienvenue! </h1>
+</div>
+
+<hr class="d-sm-flex d-none w-75 my-3 my-md-5 bg-red">
 
 <form method="get" id="form">
-    <div class="form-group row has-btn">
-        <div class="col-6 col-lg-4">
+    <div class="form-group row has-btn justify-content-center bg-black py-4 flex-md-row flex-column ">
+        <div class=" col-auto col-md-6 col-lg-4 my-2">
             <input onkeypress="onFormChange()" type="search" id="title" name="title" value="<?= $title; ?>"
                    class="form-control"
                    placeholder="Titre">
         </div>
 
-        <div class="col-auto">
+        <div class="col-auto  my-2">
             <select onchange="onFormChange();" class="custom-select mr-sm-2" id="type">
                 <option value="" selected>Type</option>
                 <option value="movie">Film</option>
@@ -40,7 +45,7 @@
             </select>
         </div>
 
-        <div class="col-auto">
+        <div class="col-auto  my-2">
             <select onchange="onFormChange();" class="custom-select mr-sm-2" id="gender_id">
                 <option value="" selected>Genre</option>
                 <option value="1">Action</option>
@@ -49,7 +54,7 @@
             </select>
         </div>
 
-        <div class="col-auto">
+        <div class="col-auto  my-2">
             <select onchange="onFormChange()" class="custom-select mr-sm-2" id="release_date">
                 <option value="" selected>Année</option>
 				<?php
@@ -62,7 +67,7 @@
         </div>
     </div>
 </form>
-<hr class="w-75 my-4">
+<hr class=" d-sm-flex d-none w-75 my-3 my-md-5 bg-red">
 
 <?php $content = ob_get_clean(); ?>
 

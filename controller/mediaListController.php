@@ -7,6 +7,7 @@
 	 ***************************/
 
 	function mediaListPage() {
+
 		ob_start();
 		require('view/mediaListView.php');
 		mediaListDisplayer();

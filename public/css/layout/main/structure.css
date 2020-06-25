@@ -3,36 +3,36 @@
 **********/
 
 .no-gutters {
-  margin-left: 0;
-  margin-right: 0;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .full-height {
-  height: 100vh;
+    height: 100vh;
 }
 
 .landscape {
-  background-image: url('../../../img/landscape.jpg');
+    background-image: url('../../../img/landscape.jpg');
 }
 
 .bg-white {
-  background-color: #fff;
+    background-color: #fff;
 }
 
 .bg-red {
-  background-color: var(--color-red) !important;
+    background-color: var(--color-red) !important;
 }
 
 .bg-blue {
-  background-color: var(--color-blue) !important;
+    background-color: var(--color-blue) !important;
 }
 
 .bg-black {
-  background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--color-black) !important;
 }
 
 .opacity-50 {
-  opacity: .5;
+    opacity: .5;
 }
 
 /**********
@@ -40,8 +40,8 @@
 **********/
 
 .wrapper {
-  width: 100%;
-  min-height: 100vh;
+    width: 100%;
+    min-height: 100vh;
 }
 
 #content {

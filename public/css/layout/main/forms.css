@@ -15,6 +15,10 @@
 
 .form-group.has-btn {
     display: flex;
+    margin-right:  -24px;!important;
+    margin-left: -24px;!important;
+    /*border-bottom:  var(--color-red) solid;*/
+    /*border-top:  var(--color-red) solid;*/
 }
 .form-group.has-btn button {
     margin-left: 15px;
