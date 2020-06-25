@@ -7,6 +7,7 @@
 	require_once('controller/signupController.php');
 	require_once('controller/mediaListController.php');
 	require_once('controller/mediaController.php');
+	require_once('controller/tvshowController.php');
 	require_once('controller/validationController.php');
 	require_once('controller/profileController.php');
 	/**************************
@@ -62,7 +63,7 @@
 				break;
 			case 'tvshow':
 				if ($user_id) {
-					mediaPage();
+					tvshowPage();
 				} else {
 					signupPage();
 				}

@@ -12,7 +12,11 @@
 		protected $release_date;
 		protected string $summary;
 		protected $trailer_url;
+		protected $duration;
 
+		/*
+			Todo : Correct construct in order to not always use static method
+		*/
 		public function __construct($media) {
 			$this->setId(isset($media->id) ? $media->id : null);
 			$this->setGenreId(isset($media->genre_id) ? $media->genre_id : null);
@@ -28,7 +32,7 @@
 		 * -------- GET MEDIA DATA BY ID --------
 		 **************************************
 		 * @param int $id
-		 * @return Media
+		 * @return mixed //Media
 		 */
 
 		public static function getMediaById(int $id) {
@@ -61,7 +65,7 @@
 
 			return $req->fetchAll();
 		}
-		
+
 		/***************************
 		 * -------- GET LIST --------
 		 **************************
@@ -82,6 +86,26 @@
 
 			return $req->fetchAll();
 
+		}
+
+		/**********************************************
+		 * ----- GET DATA EPISODES FILTER BY SHOW -----
+		 **********************************************
+		 * @param int $id
+		 * @return array
+		 */
+
+		static public function getDbEpisodesByShow($id) {
+			// Open database connection
+			$db = init_db();
+
+			$req = $db->prepare("SELECT * FROM episodes WHERE show_id = ?");
+			$req->execute(array($id));
+
+			// Close database connection
+			$db = null;
+
+			return $req->fetchAll();
 		}
 
 		/***************************

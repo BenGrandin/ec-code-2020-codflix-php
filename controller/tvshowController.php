@@ -3,10 +3,10 @@
 	require_once('model/media.php');
 
 	/***************************
-	 * ----- LOAD MEDIA PAGE -----
+	 * ----- LOAD TVSHOW PAGE -----
 	 ***************************/
 
-	function mediaPage() {
+	function tvshowPage() {
 
 		$id = isset($_GET['id']) ? $_GET['id'] : null;
 
@@ -18,6 +18,7 @@
 
 		$media['status'] = strtolower($media['status']) === strtolower("Released") ? "Est sorti" : "Va sortir";
 
+		$medias = Media::getDbEpisodesByShow($id);
 
-		require('view/mediaView.php');
+		require('view/tvshowView.php');
 	}

@@ -13,31 +13,7 @@
     </div>
 </div>
 
-<div class="media-list">
-	<?php foreach ($medias as $media): ?>
-        <a class="item <?= $media['type']; ?>" href="index.php?action=<?= $media['type']; ?>&id=<?= $media['id']; ?>">
-            <div class="video">
-                <div>
-                    <iframe allowfullscreen="" frameborder="0"
-                            src="<?= $media['trailer_url']; ?>"></iframe>
-                </div>
-            </div>
-            <div class="title d-flex flex-column ">
-                <div>
-					<?= $media['title']; ?>
-                </div>
-                <span class="type badge badge-secondary m-1">
-					<?php
-						if ($media['type'] === "movie") $media['type'] = "Film";
-						if ($media['type'] === "tvshow") $media['type'] = "Série";
-						echo $media['type']; ?>
-                    </span></div>
-            <div class="summary">
-				<?= $media['summary']; ?>
-            </div>
-        </a>
-	<?php endforeach; ?>
-</div>
+<?php require('components/mediaListDisplayer.php') ?>
 
 
 <?php $content = ob_get_clean(); ?>

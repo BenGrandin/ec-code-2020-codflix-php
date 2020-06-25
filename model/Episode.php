@@ -23,15 +23,14 @@
 		 * -------- GET EPISODE DATA BY ID --------
 		 **************************************
 		 * @param int $id
-		 * @return Media
+		 * @return mixed
 		 */
 
 		public static function getDbEpisodeById(int $id) {
 
 			// Open database connection
 			$db = init_db();
-
-			$req = $db->prepare("SELECT * FROM episodes WHERE id = ?");
+			$req = $db->prepare("SELECT * FROM episodes WHERE id = $id");
 			$req->execute(array($id));
 
 			// Close database connection
@@ -50,26 +49,6 @@
 
 			$req = $db->prepare("SELECT * FROM episodes");
 			$req->execute();
-
-			// Close database connection
-			$db = null;
-
-			return $req->fetchAll();
-		}
-
-		/**********************************************
-		 * ----- GET DATA EPISODES FILTER BY SHOW -----
-		 **********************************************
-		 * @param int $id
-		 * @return array
-		 */
-
-		static public function getDbEpisodesByShow($id) {
-			// Open database connection
-			$db = init_db();
-
-			$req = $db->prepare("SELECT * FROM episodes WHERE show_id = ?");
-			$req->execute(array($id));
 
 			// Close database connection
 			$db = null;
