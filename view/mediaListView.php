@@ -25,10 +25,11 @@
 				document.querySelector('.media-list').replaceWith(node);
 			})
 	};
+
 </script>
 <div class="row justify-content-center text-center">
-	<input hidden id="version" value="<?= $action ?>"/>
-    <h1 class="col" ><?=  $action ==='history'? 'Mon historique' : 'Bienvenue !' ?></h1>
+    <input hidden id="version" value="<?= $action ?>"/>
+    <h1 class="col"><?= $action === 'history' ? 'Mon historique' : 'Bienvenue !' ?></h1>
 </div>
 
 <hr class="d-sm-flex d-none w-75 my-3 my-md-5 bg-red">
@@ -36,7 +37,7 @@
 <form method="get" id="form">
     <div class="form-group row has-btn justify-content-center bg-black py-4 flex-md-row flex-column ">
         <div class=" col-auto col-md-6 col-lg-4 my-2">
-            <input onkeypress="onFormChange()" type="search" id="title" name="title" value="<?= $title; ?>"
+            <input type="search" id="title" name="title" value="<?= $title; ?>"
                    class="form-control"
                    placeholder="Titre">
         </div>
@@ -73,5 +74,11 @@
 </form>
 <hr class=" d-sm-flex d-none w-75 my-3 my-md-5 bg-red">
 
+
+<script>
+	const titleDiv = document.getElementById('title');
+
+	titleDiv.addEventListener("input", onFormChange);
+</script>
 <?php $content = ob_get_clean(); ?>
 
